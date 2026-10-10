@@ -1,0 +1,41 @@
+id,timestamp,rule_name,severity,src_ip,dst_ip,description
+SIEM-5006,2026-10-08T10:22:00Z,Multiple failed authentications,medium,203.0.113.48,10.0.1.150,312 failed sign-ins followed by account lockout on HR-LAPTOP-14
+SIEM-5008,2026-10-08T10:29:00Z,Mass file rename activity,medium,203.0.113.138,10.0.6.200,Hundreds of rename events within 2 minutes on AD-DC-01
+SIEM-5015,2026-10-08T11:35:00Z,Mass file rename activity,medium,203.0.113.18,10.0.0.189,Hundreds of rename events within 2 minutes on VPN-GW
+SIEM-5025,2026-10-08T14:46:00Z,Multiple failed authentications,medium,203.0.113.169,10.0.0.118,368 failed sign-ins followed by account lockout on DEV-BOX-07
+SIEM-5030,2026-10-08T15:00:00Z,Malware signature quarantined,high,203.0.113.98,10.0.2.164,Endpoint agent quarantined a suspicious executable on MAIL-01
+SIEM-5011,2026-10-08T15:21:00Z,Outbound traffic to rare host,7,203.0.113.20,10.0.1.133,234 MB uploaded to an unfamiliar external host on FILESRV-02
+SIEM-5028,2026-10-08T15:55:00Z,Unauthorized access to restricted share,high,203.0.113.15,10.0.1.2,Access denied events followed by a successful read on FILESRV-02
+SIEM-5023,2026-10-08T16:42:00Z,Mass file rename activity,medium,203.0.113.48,10.0.4.74,Hundreds of rename events within 2 minutes on FILESRV-02
+SIEM-5004,2026-10-08T16:57:00Z,Port scan detected,low,203.0.113.103,10.0.0.58,Sequential connection attempts across many ports on FILESRV-02
+SIEM-5001,2026-10-08T17:08:00Z,Unauthorized access to restricted share,high,203.0.113.16,10.0.8.56,Access denied events followed by a successful read on DB-02
+SIEM-5016,2026-10-08T17:28:00Z,VPN login from new country,warning,203.0.113.176,10.0.7.74,First-time geolocation for this account on DEV-BOX-07
+SIEM-5010,2026-10-08T17:43:00Z,Phishing email reported,medium,203.0.113.78,10.0.8.128,User reported spoofed invoice email on AD-DC-01
+SIEM-5013,2026-10-08T17:48:00Z,Multiple failed authentications,medium,203.0.113.204,10.0.5.89,375 failed sign-ins followed by account lockout on MAIL-01
+SIEM-5003,2026-10-08T18:19:00Z,Brute force SSH login,high,203.0.113.33,10.0.3.163,341 failed SSH logins in 5 minutes on WEB-01
+SIEM-5020,2026-10-08T19:25:00Z,Admin group membership changed,critical,203.0.113.73,10.0.2.211,Standard account added to administrators group on VPN-GW
+SIEM-5024,2026-10-08T20:26:00Z,Admin group membership changed,critical,203.0.113.96,10.0.9.146,Standard account added to administrators group on FILESRV-02
+SIEM-5014,2026-10-08T23:01:00Z,Port scan detected,low,203.0.113.150,10.0.7.19,Sequential connection attempts across many ports on VPN-GW
+SIEM-5032,2026-10-08T23:54:00Z,Mass file rename activity,medium,203.0.113.81,10.0.1.38,Hundreds of rename events within 2 minutes on MAIL-01
+SIEM-5033,2026-10-09T00:15:00Z,Outbound traffic to rare host,7,203.0.113.214,10.0.2.134,31 MB uploaded to an unfamiliar external host on HR-LAPTOP-14
+SIEM-5009,2026-10-09T01:59:00Z,Port scan detected,low,203.0.113.94,10.0.4.65,Sequential connection attempts across many ports on HR-LAPTOP-14
+SIEM-5005,2026-10-09T04:19:00Z,Outbound traffic to rare host,7,203.0.113.38,10.0.8.32,312 MB uploaded to an unfamiliar external host on VPN-GW
+SIEM-5002,2026-10-09T04:23:00Z,Admin group membership changed,critical,203.0.113.19,10.0.3.25,Standard account added to administrators group on DEV-BOX-07
+SIEM-5026,2026-10-09T05:41:00Z,Admin group membership changed,critical,203.0.113.102,10.0.1.125,Standard account added to administrators group on DEV-BOX-07
+SIEM-5019,2026-10-09T06:14:00Z,Admin group membership changed,critical,203.0.113.236,10.0.7.22,Standard account added to administrators group on AD-DC-01
+SIEM-5031,2026-10-09T08:04:00Z,Port scan detected,low,203.0.113.123,10.0.1.31,Sequential connection attempts across many ports on AD-DC-01
+SIEM-5034,2026-10-09T08:14:00Z,Multiple failed authentications,medium,203.0.113.39,10.0.8.236,33 failed sign-ins followed by account lockout on VPN-GW
+SIEM-5021,2026-10-09T08:26:00Z,Admin group membership changed,critical,203.0.113.176,10.0.6.247,Standard account added to administrators group on FILESRV-02
+SIEM-5017,2026-10-09T09:14:00Z,VPN login from new country,warning,203.0.113.7,10.0.7.92,First-time geolocation for this account on DB-02
+SIEM-5039,2026-10-09T13:51:00Z,Brute force SSH login,high,203.0.113.122,10.0.4.51,374 failed SSH logins in 5 minutes on MAIL-01
+SIEM-5037,2026-10-09T17:42:00Z,VPN login from new country,warning,203.0.113.158,10.0.3.208,First-time geolocation for this account on DEV-BOX-07
+SIEM-5036,2026-10-09T17:43:00Z,Unauthorized access to restricted share,high,203.0.113.138,10.0.8.201,Access denied events followed by a successful read on MAIL-01
+SIEM-5038,2026-10-09T19:17:00Z,Malware signature quarantined,high,203.0.113.134,10.0.7.93,Endpoint agent quarantined a suspicious executable on WEB-01
+SIEM-5027,2026-10-09T19:55:00Z,Brute force SSH login,high,203.0.113.19,10.0.3.114,103 failed SSH logins in 5 minutes on DB-02
+SIEM-5022,2026-10-09T20:54:00Z,Phishing email reported,medium,203.0.113.40,10.0.3.170,User reported spoofed invoice email on WEB-01
+SIEM-5012,2026-10-09T22:33:00Z,Unauthorized access to restricted share,high,203.0.113.240,10.0.7.109,Access denied events followed by a successful read on DB-02
+SIEM-5000,2026-10-09T22:38:00Z,Unauthorized access to restricted share,high,203.0.113.103,10.0.0.20,Access denied events followed by a successful read on DB-02
+SIEM-5029,2026-10-10T02:00:00Z,Multiple failed authentications,medium,203.0.113.244,10.0.5.159,33 failed sign-ins followed by account lockout on DB-02
+SIEM-5007,2026-10-10T02:16:00Z,Unauthorized access to restricted share,high,203.0.113.142,10.0.1.146,Access denied events followed by a successful read on HR-LAPTOP-14
+SIEM-5035,2026-10-10T02:43:00Z,VPN login from new country,warning,203.0.113.180,10.0.4.134,First-time geolocation for this account on FILESRV-02
+SIEM-5018,2026-10-10T04:54:00Z,Mass file rename activity,medium,203.0.113.57,10.0.4.35,Hundreds of rename events within 2 minutes on HR-LAPTOP-14

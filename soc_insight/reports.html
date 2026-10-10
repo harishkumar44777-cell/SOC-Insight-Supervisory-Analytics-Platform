@@ -1,0 +1,18 @@
+{% extends "base.html" %}{% block title %}Reports{% endblock %}{% block h1 %}Analytics & Reports{% endblock %}
+{% block content %}
+<form class="cardx mb-3 noprint" method="get"><div class="row g-2 align-items-end">
+<div class="col-6 col-md-2"><label class="form-label">From</label><input type="date" class="form-control" name="date_from" value="{{ qs.get('date_from','') }}"></div>
+<div class="col-6 col-md-2"><label class="form-label">To</label><input type="date" class="form-control" name="date_to" value="{{ qs.get('date_to','') }}"></div>
+<div class="col-6 col-md-2"><label class="form-label">Severity</label><select class="form-select" name="severity"><option value="">All</option>{% for x in SEVERITIES %}<option {{ 'selected' if qs.get('severity')==x }}>{{ x }}</option>{% endfor %}</select></div>
+<div class="col-6 col-md-3"><label class="form-label">Category</label><select class="form-select" name="category"><option value="">All</option>{% for x in CATEGORIES %}<option {{ 'selected' if qs.get('category')==x }}>{{ x }}</option>{% endfor %}</select></div>
+<div class="col-md-3 d-flex gap-2"><button class="btn btn-info">Apply</button><a class="btn btn-success" href="{{ url_for('export_csv', **qs) }}">Export CSV</a><button type="button" class="btn btn-outline-secondary" onclick="window.print()">Print</button></div></div></form>
+<div class="row g-3 mb-3">
+{% for l,v in [('Incidents',s.total),('SLA compliance', (s.compliance~'%') if s.compliance is not none else 'n/a'),('Avg acknowledgement',s.avg_ack|dur),('Avg resolution',s.avg_res|dur)] %}<div class="col-6 col-lg-3"><div class="cardx kpi acc"><div class="l">{{ l }}</div><div class="v">{{ v }}</div></div></div>{% endfor %}</div>
+<div class="row g-3 mb-3">
+<div class="col-md-4"><div class="cardx"><h2>Severity</h2><table>{% for k,v in s.severity.items() %}<tr><td>{{ k }}</td><td>{{ v }}</td></tr>{% endfor %}</table></div></div>
+<div class="col-md-4"><div class="cardx"><h2>Status</h2><table>{% for k,v in s.status.items() %}<tr><td>{{ k }}</td><td>{{ v }}</td></tr>{% endfor %}</table></div></div>
+<div class="col-md-4"><div class="cardx"><h2>Category</h2><table>{% for k,v in s.category.items() %}<tr><td>{{ k }}</td><td>{{ v }}</td></tr>{% endfor %}</table></div></div></div>
+<div class="row g-3"><div class="col-md-6"><div class="cardx"><h2>Analyst workload</h2><table><tr><th>Analyst</th><th>Assigned</th><th>Open</th><th>Resolved</th></tr>{% for r in rows %}<tr><td>{{ r.name }}</td><td>{{ r.total }}</td><td>{{ r.open }}</td><td>{{ r.resolved }}</td></tr>{% endfor %}</table></div></div>
+<div class="col-md-6"><div class="cardx"><h2>Top unresolved categories</h2>{% if top %}<table>{% for c,n in top %}<tr><td>{{ c }}</td><td>{{ n }}</td></tr>{% endfor %}</table>{% else %}<p class="note">No unresolved incidents in this selection.</p>{% endif %}
+<p class="note mt-2">SLA compliance = Within SLA ÷ (Within SLA + Breached), acknowledgement SLA only. Pending / at-risk / N/A are excluded.</p></div></div></div>
+{% endblock %}

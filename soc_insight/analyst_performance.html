@@ -1,0 +1,19 @@
+{% extends "base.html" %}{% block title %}Analyst Performance{% endblock %}{% block h1 %}Analyst Performance{% endblock %}
+{% block content %}
+<div class="alert alert-info">{{ summary }}</div>
+<div class="row g-3 mb-3"><div class="col-md-6"><div class="cardx"><h2>Workload distribution (open vs resolved)</h2><div class="chartbox"><canvas id="a1"></canvas></div></div></div>
+<div class="col-md-6"><div class="cardx"><h2>Avg ack / resolution time (min)</h2><div class="chartbox"><canvas id="a2"></canvas></div></div></div></div>
+<div class="cardx"><div class="d-flex justify-content-between mb-2"><h2 class="mb-0">Analyst comparison</h2><input id="f" class="form-control w-auto" placeholder="Filter analyst…"></div>
+<div class="tw"><table id="t"><thead><tr><th>Analyst</th><th>Assigned</th><th>Open</th><th>Resolved</th><th>Critical</th><th>Avg ack</th><th>Avg resolution</th><th>Overdue</th></tr></thead><tbody>
+{% for r in rows %}<tr><td>{{ r.name }}<div class="note">{{ r.role }} · Team {{ r.team }}</div></td><td>{{ r.total }}</td><td>{{ r.open }}</td><td>{{ r.resolved }}</td><td>{{ r.critical }}</td><td>{{ r.avg_ack|dur if r.avg_ack is not none else 'No data' }}</td><td>{{ r.avg_res|dur if r.avg_res is not none else 'No completed incidents' }}</td><td>{{ r.overdue }}</td></tr>{% else %}<tr><td colspan="8" class="note">No analysts.</td></tr>{% endfor %}</tbody></table></div>
+<div class="note mt-2">No composite "best analyst" score is shown on purpose: resolved counts depend on incident mix and severity, so they are not a fair quality measure. Overdue = unacknowledged past SLA threshold.</div></div>
+{% endblock %}
+{% block scripts %}<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script><script>
+var D=document.documentElement.getAttribute('data-theme')==='dark';
+var rows={{ rows|tojson }};
+document.getElementById('f').addEventListener('input',function(e){var q=e.target.value.toLowerCase();document.querySelectorAll('#t tbody tr').forEach(function(r){r.style.display=r.textContent.toLowerCase().includes(q)?'':'none'})});
+if(typeof Chart!=='undefined'){var ax={x:{ticks:{color:(D?'#94A3B8':'#6B6880')}},y:{ticks:{color:(D?'#94A3B8':'#6B6880')},beginAtZero:true,grid:{color:(D?'#26334d':'#EDE9FE')}}},op={responsive:true,maintainAspectRatio:false,scales:ax,plugins:{legend:{labels:{color:(D?'#CBD5E1':'#4B4763')}}}},n=rows.map(function(r){return r.name});
+new Chart(a1,{type:'bar',data:{labels:n,datasets:[{label:'Open',data:rows.map(function(r){return r.open}),backgroundColor:'#F59E0B'},{label:'Resolved',data:rows.map(function(r){return r.resolved}),backgroundColor:'#22C55E'}]},options:Object.assign({},op,{scales:Object.assign({},ax,{x:{stacked:true,ticks:{color:(D?'#94A3B8':'#6B6880')}},y:{stacked:true,beginAtZero:true,ticks:{color:(D?'#94A3B8':'#6B6880')},grid:{color:(D?'#26334d':'#EDE9FE')}}})})});
+new Chart(a2,{type:'bar',data:{labels:n,datasets:[{label:'Avg ack',data:rows.map(function(r){return r.avg_ack}),backgroundColor:(D?'#38BDF8':'#7C3AED')},{label:'Avg resolution',data:rows.map(function(r){return r.avg_res}),backgroundColor:'#22C55E'}]},options:op});}
+else window.toast('Charts need internet access (Chart.js CDN).','warning');
+</script>{% endblock %}

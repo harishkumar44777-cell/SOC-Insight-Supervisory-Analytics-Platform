@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block title %}Settings{% endblock %}{% block h1 %}Settings / About{% endblock %}
+{% block content %}
+<div class="row g-3"><div class="col-lg-6"><div class="cardx"><h2>Acknowledgement SLA thresholds (minutes)</h2>
+<p class="note">Configurable <b>demo</b> thresholds, not universal SOC standards. Acknowledgement time = acknowledged_at − created_at; for unacknowledged incidents, now − created_at. Strictly greater than the threshold is a breach; ≥80% of it is "At risk". No resolution SLA is defined.</p>
+<form method="post" action="{{ url_for('settings') }}">{% for s in SEVERITIES %}<div class="mb-2"><label class="form-label">{{ s }}</label><input class="form-control" type="number" min="1" max="1440" name="sla_{{ s }}" value="{{ thr[s] }}" required></div>{% endfor %}<button class="btn btn-info">Save thresholds</button></form></div>
+<div class="cardx mt-3"><h2>Demo data</h2><form method="post" action="{{ url_for('clear_demo') }}" data-confirm="Remove all demo incidents? Real imported alerts are kept." class="mb-3"><input type="hidden" name="confirm" value="yes"><button class="btn btn-outline-warning">Remove demo incidents only</button></form><p class="note">Replaces demo incidents with a fresh synthetic set. Real imported alerts, analysts and SLA settings are kept.</p>
+<form method="post" action="{{ url_for('reset') }}" data-confirm="This will delete all incident data and recreate the demo dataset. Continue?"><input type="hidden" name="confirm" value="yes"><button class="btn btn-danger">Reset Demo Data</button></form></div></div>
+<div class="col-lg-6"><div class="cardx"><h2>About SOC Insight</h2><p>Supervisory analytics for SOC incident records: severity, SLA compliance, analyst workload, trends and explainable recommendations.</p>
+<p><b>Stack:</b> Python 3, Flask, SQLite, Bootstrap 5, Chart.js, Font Awesome.</p>
+<p><b>Demo-data notice:</b> all data is synthetic (documentation IP ranges 203.0.113.0/24 and 198.51.100.0/24). The app is not connected to a real SOC, SIEM or threat feed and does not detect attacks; it analyses incident records supplied to it.</p>
+<p class="note">Timestamps are stored and shown in UTC. Local demo app without login: do not expose it to a network.</p></div></div></div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}{% from "_macros.html" import pill %}{% block title %}{{ d.alert_code }}{% endblock %}{% block h1 %}{{ d.alert_code }}{% endblock %}
+{% block content %}
+<div class="row g-3"><div class="col-lg-7"><div class="cardx"><h2>Incident</h2><h5>{{ d.title }}</h5><p>{{ d.description }}</p>
+<div class="row g-2">
+<div class="col-6">Severity: {{ pill(d.severity) }}</div><div class="col-6">Status: {{ pill(d.status) }}</div>
+<div class="col-6">Category: {{ d.alert_type }}</div><div class="col-6">Analyst: {{ d.analyst_name or 'Unassigned' }}</div>
+<div class="col-6">Source IP: {{ d.source_ip }}</div><div class="col-6">Destination IP: {{ d.destination_ip }}</div>
+<div class="col-6">Created: {{ d.created_at|replace('T',' ') }}</div><div class="col-6">Acknowledged: {{ (d.acknowledged_at or '—')|replace('T',' ') }}</div>
+<div class="col-6">Resolved: {{ (d.resolved_at or '—')|replace('T',' ') }}</div><div class="col-6">Ack duration: {{ d.ack_min|dur }}</div>
+<div class="col-6">Resolution duration: {{ d.res_min|dur }}</div><div class="col-6">SLA: {{ pill(d.sla) }} <span class="note">(threshold {{ d.threshold }} min, acknowledgement)</span></div></div>
+<div class="alert alert-info mt-3 mb-0"><b>Recommended next action:</b> {{ action }}</div></div>
+<div class="cardx mt-3"><h2>Activity timeline</h2><ul class="timeline">{% for l in logs %}<li><b>{{ l.action }}</b> <small>· {{ l.actor }} · {{ l.timestamp|replace('T',' ') }}</small><div>{{ l.details }}</div></li>{% endfor %}</ul></div></div>
+<div class="col-lg-5">{% if d.status=='Closed' %}<div class="cardx">This incident is closed and cannot be modified.</div>{% else %}
+<div class="cardx mb-3"><h2>Actions</h2>
+<form method="post" action="{{ url_for('assign', iid=d.id) }}" class="mb-3"><label class="form-label">Assign / reassign analyst</label><div class="input-group"><select name="analyst_id" class="form-select">{% for a in analysts %}<option value="{{ a.id }}" {{ 'selected' if a.id==d.assigned_analyst_id }}>{{ a.name }} ({{ a.team }})</option>{% endfor %}</select><button class="btn btn-info">Assign</button></div></form>
+<div class="mb-3"><label class="form-label">Change status</label><div class="d-flex flex-wrap gap-2">{% for n in nexts %}<form method="post" action="{{ url_for('status', iid=d.id) }}" data-confirm="Change status to {{ n }}?"><input type="hidden" name="status" value="{{ n }}"><button class="btn btn-sm {{ 'btn-success' if n in ('Resolved','Closed') else 'btn-outline-info' }}">{{ 'Acknowledge' if n=='Acknowledged' else ('Reopen (In Progress)' if n=='In Progress' and d.status=='Resolved' else n) }}</button></form>{% endfor %}</div></div>
+<form method="post" action="{{ url_for('severity', iid=d.id) }}" class="mb-3"><label class="form-label">Change severity</label><div class="input-group"><select name="severity" class="form-select">{% for s in SEVERITIES %}<option {{ 'selected' if s==d.severity }}>{{ s }}</option>{% endfor %}</select><button class="btn btn-outline-info">Update</button></div></form>
+<form method="post" action="{{ url_for('note', iid=d.id) }}"><label class="form-label">Investigation note</label><textarea name="note" class="form-control mb-2" rows="3" maxlength="1000" required></textarea><button class="btn btn-outline-info">Add note</button></form></div>{% endif %}
+<a href="{{ url_for('alerts') }}">← Back to alerts</a></div></div>
+{% endblock %}

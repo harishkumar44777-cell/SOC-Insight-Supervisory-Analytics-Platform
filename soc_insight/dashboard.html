@@ -1,0 +1,23 @@
+{% extends "base.html" %}{% block title %}Dashboard{% endblock %}{% block h1 %}Dashboard{% endblock %}
+{% block content %}
+<div class="hero"><div><div class="eyebrow">Supervisory Analytics</div><h2>Security Operations Overview</h2><p>Import or push alerts and every type is classified automatically and shown below, with no restart needed.</p></div>
+<div class="live"><div><span class="dot" id="dot"></span><b id="live-text">Live</b></div><div class="form-check form-switch mt-1"><input class="form-check-input" type="checkbox" id="live" checked><label class="form-check-label" for="live">Auto-refresh every 15 s</label></div><div class="small" id="updated" style="opacity:.85"></div></div></div>
+<div class="cardx mb-3 noprint"><div class="row g-2 align-items-end">
+<div class="col-6 col-md-3"><label class="form-label">Period</label><select id="days" class="form-select"><option value="all" selected>All time</option><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option></select></div>
+<div class="col-6 col-md-3"><label class="form-label">Severity</label><select id="sev" class="form-select"><option value="">All</option>{% for s in SEVERITIES %}<option>{{ s }}</option>{% endfor %}</select></div>
+<div class="col-6 col-md-3"><label class="form-label">Data source</label><select id="origin" class="form-select"><option value="">All</option><option value="real">Real (imported)</option><option value="demo">Demo</option></select></div>
+<div class="col-6 col-md-3"><button id="refresh" class="btn btn-info w-100"><i class="fa-solid fa-rotate"></i> Refresh Analytics</button></div></div></div>
+<div id="state" class="spin mb-2"></div>
+<div class="row g-3 mb-3" id="kpis"></div>
+<div class="cardx mb-3"><h2>Auto-detected alert types</h2><div id="types"></div><div class="note mt-1">Types are assigned automatically from each alert's category or title keywords. Click a type to list its alerts.</div></div>
+<div class="row g-3 mb-3">
+<div class="col-md-6 col-xl-4"><div class="cardx"><h2>Severity distribution</h2><div class="chartbox"><canvas id="c_sev"></canvas></div></div></div>
+<div class="col-md-6 col-xl-4"><div class="cardx"><h2>Incident status</h2><div class="chartbox"><canvas id="c_stat"></canvas></div></div></div>
+<div class="col-md-12 col-xl-4"><div class="cardx"><h2>Alerts created per day</h2><div class="chartbox"><canvas id="c_trend"></canvas></div></div></div>
+<div class="col-md-6"><div class="cardx"><h2>Alert categories</h2><div class="chartbox"><canvas id="c_cat"></canvas></div></div></div>
+<div class="col-md-6"><div class="cardx"><h2>Analyst workload</h2><div class="chartbox"><canvas id="c_work"></canvas></div></div></div>
+<div class="col-12"><div class="cardx"><h2>Response performance by analyst (minutes)</h2><div class="chartbox"><canvas id="c_resp"></canvas></div><div class="note mt-2">Averages use only incidents that have the relevant timestamp. Imported alerts have no acknowledgement time until an analyst acknowledges them.</div></div></div></div>
+<div class="cardx"><h2>Recent incidents</h2><div class="tw"><table><thead><tr><th>ID</th><th>Title</th><th>Severity</th><th>Status</th><th>SLA</th><th>Analyst</th><th>Created (UTC)</th><th></th></tr></thead><tbody id="recent"></tbody></table></div></div>
+<div class="note mt-3"><b>Definitions:</b> Open = Open/Acknowledged/In Progress. Resolved = Resolved or Closed. SLA breached = acknowledgement time (or elapsed time if still unacknowledged) exceeds the demo threshold for its severity.</div>
+{% endblock %}
+{% block scripts %}<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script><script src="{{ url_for('static', filename='dashboard.js') }}"></script>{% endblock %}

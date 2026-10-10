@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% from "_macros.html" import pill %}{% block title %}Recommendations{% endblock %}{% block h1 %}Supervisor Recommendations{% endblock %}
+{% block content %}
+<div class="note mb-3">Deterministic, rule-based recommendations computed from the current database state each time this page loads (so no duplicates accumulate). This is not machine learning.</div>
+{% for r in recs %}<div class="cardx rec p-{{ r.priority }} mb-3"><div class="d-flex justify-content-between"><h5>{{ r.title }}</h5>{{ pill(r.priority) }}</div>
+<div><b>Reason:</b> {{ r.reason }}</div><div><b>Related:</b> {{ r.related }}</div><div><b>Suggested action:</b> {{ r.action }}</div>
+<div class="note mt-2">Rule {{ r.rule }}: {{ r.explanation }} · Calculated {{ r.period }}</div></div>
+{% else %}<div class="cardx">No recommendations: no rule is currently triggered.</div>{% endfor %}
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% block title %}Import{% endblock %}{% block h1 %}Import / Real Alerts{% endblock %}
+{% block content %}
+<div class="note mb-3">SOC Insight analyses alerts that other tools produce (SIEM, EDR, firewall, log exports). It does not sniff networks. Imported alerts get an <b>RA-</b> code and are tagged with their source; repeat imports skip duplicates. Imported alerts start as Open with no acknowledgement time (real times are unknown, so none are invented).</div>
+{% if real %}<div class="alert alert-success">Real alerts loaded: {% for o,c in real %}{{ o }} = {{ c }}{{ ', ' if not loop.last }}{% endfor %}. <a href="{{ url_for('alerts', origin='real') }}">View them</a></div>{% endif %}
+<div class="row g-3"><div class="col-lg-6"><div class="cardx"><h2>1. Upload a CSV / JSON export</h2>
+<form method="post" enctype="multipart/form-data"><input class="form-control mb-2" type="file" name="file" accept=".csv,.json" required><button class="btn btn-info">Import alerts</button></form>
+<p class="note mt-2">Max 2 MB / 5000 rows. Column names are matched flexibly: <b>title</b> (or name, alert, rule_name, message), <b>severity</b> (critical/high/medium/low, info, warning, or 0–10), <b>timestamp</b> (ISO 8601 or epoch; stored as UTC), <b>source_ip</b>, <b>destination_ip</b>, <b>category</b>, <b>description</b>, <b>id</b>. Only title is required. Try <code>sample_real_alerts.csv</code>.</p></div></div>
+<div class="col-lg-6"><div class="cardx"><h2>2. Webhook (push from a SIEM or script)</h2>
+<p class="note">POST JSON to <code>/api/ingest</code> with your API key. Keep the key private.</p>
+<label class="form-label">API key</label><input class="form-control mb-2" readonly value="{{ key }}" onclick="this.select()">
+<pre class="note" style="white-space:pre-wrap">Invoke-RestMethod -Uri http://127.0.0.1:5000/api/ingest -Method Post -Headers @{"X-API-Key"="{{ key }}"} -ContentType "application/json" -Body '{"title":"Failed SSH logins","severity":"high","source_ip":"203.0.113.9","timestamp":"2026-10-10T09:30:00Z"}'</pre></div></div>
+<div class="col-12"><div class="cardx"><h2>3. Windows failed-logon collector (this PC)</h2>
+<p class="note">Reads Security event 4625 from the last 24 hours on <b>this computer only</b> and raises an alert for any source IP with 5+ failures (Medium; High at 20+). Needs a terminal started with <b>Run as administrator</b>. Windows only. Not tested on Windows by the author.</p>
+<form method="post" action="{{ url_for('collect_windows') }}"><button class="btn btn-info" {{ '' if is_windows else 'disabled' }}>Scan this PC now</button>{% if not is_windows %} <span class="note">(unavailable: server is not running on Windows)</span>{% endif %}</form></div></div></div>
+{% endblock %}

@@ -1,0 +1,5 @@
+id,timestamp,rule_name,severity,src_ip,dst_ip,description
+FW-1001,2026-10-10T08:12:00Z,Brute force SSH login,high,203.0.113.45,10.0.1.12,120 failed SSH logins in 5 minutes
+EDR-2002,2026-10-10T08:40:00Z,Ransomware behaviour detected,critical,,10.0.2.31,Mass file encryption on host
+MAIL-3003,2026-10-10T09:05:00Z,Phishing email reported,medium,198.51.100.7,,User reported spoofed invoice
+FW-4004,2026-10-10T09:20:00Z,Outbound traffic to rare host,7,10.0.3.9,198.51.100.99,2 GB upload
